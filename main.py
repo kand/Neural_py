@@ -1,8 +1,12 @@
+from training import Training
 from graph import Graph
 from edge import Edge
 from node import Node
 
 def learnNAND():
+    train = Training.readFromFile("training/NAND")
+    print repr(train)
+    
     graph = Graph([2,1])
 
     training = [[0,0,1],[0,1,1],[1,0,1],[1,1,0]]
