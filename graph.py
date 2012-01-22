@@ -26,7 +26,7 @@ class Graph:
                     dummy = Node()
                     dummy.id = "d"
                     dummy.output = 1.0
-                    node.addIndegree(dummy,1.0)
+                    node.addIndegree(dummy,0.0)
                 
                 layer.append(node)
                 self.nodeCount += 1

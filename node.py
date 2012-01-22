@@ -15,10 +15,10 @@ class Node:
     def collectInput(self):
         self.input = 0.0
         for edge in self.indegrees:
-            self.input += edge.origin.output
+            self.input += edge.origin.output * edge.weight
         return self.input
 
-    def activate(self):
-        if self.collectInput > 0.5: self.output = 1
-        self.output = 0
+    def activate(self, threshold):
+        if self.collectInput() > threshold: self.output = 1
+        else: self.output = 0
         return self.output
