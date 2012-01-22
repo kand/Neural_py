@@ -34,15 +34,7 @@ class Training:
         for i in range(0, self.maxIterations):
             # loop through training set
             for j in range(0, len(self.trainingData)):
-# TODO : replace this section with graph.activat()
-                # set inputs in graph
-                for k in range(0, inputSize):
-                    graph.layers[0][k].output = self.trainingData[j][k]
-                # active each layer forward through the graph
-                for k in range(1, len(graph.layers)):
-                    # sequentially activate each node in layer
-                    for l in range(0, len(graph.layers[k])):
-                        graph.layers[k][l].activate(threshold)
+                graph.activate(self.trainingData[j][0:inputSize], threshold)
                 # propagate delta error backwards from output to input
                 for k in range(0,outputSize):
 # TODO : should really be using derivative of output func, see book

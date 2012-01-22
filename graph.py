@@ -40,17 +40,17 @@ class Graph:
         outputs = []
 
         # set inputs in graph
-        for k in range(0, len(input_list)):
-            self.layers[0][k].output = input_list[k]
+        for i in range(0, len(input_list)):
+            self.layers[0][i].output = input_list[i]
         # active each layer forward through the graph
-        for k in range(1, len(self.layers)):
+        for i in range(1, len(self.layers)):
             # sequentially activate each node in layer
-            for l in range(0, len(self.layers[k])):
-                result = self.layers[k][l].activate(threshold)
+            for j in range(0, len(self.layers[i])):
+                result = self.layers[i][j].activate(threshold)
 
                 #get outputs
-                if k == len(self.layers) - 1:
-                    outputs.append(self.layers[k][l].output)
+                if i == len(self.layers) - 1:
+                    outputs.append(self.layers[i][j].output)
                     
         return outputs
 
