@@ -33,6 +33,27 @@ class Graph:
             
             self.layers.append(layer)
 
+    # Activate the graph to get a result
+    #   input_list = list of inputs
+    # returns list of outputs produced by node activation
+    def activate(self, input_list, threshold):
+        outputs = []
+
+        # set inputs in graph
+        for k in range(0, len(input_list)):
+            self.layers[0][k].output = input_list[k]
+        # active each layer forward through the graph
+        for k in range(1, len(self.layers)):
+            # sequentially activate each node in layer
+            for l in range(0, len(self.layers[k])):
+                result = self.layers[k][l].activate(threshold)
+
+                #get outputs
+                if k == len(self.layers) - 1:
+                    outputs.append(self.layers[k][l].output)
+                    
+        return outputs
+
     # String rep of Graph
     def __repr__(self):
         ret = "nodes: %i\n" % self.nodeCount

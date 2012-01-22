@@ -1,3 +1,5 @@
+from graph import Graph
+
 class Training:
 
     TYPE_EPOCH = "EPOCH"
@@ -11,6 +13,57 @@ class Training:
         self.minError = 0.0
         self.maxIterations = 0
         self.trainingData = []
+
+    # Based on given training parameters, create and train a graph
+    #   threshold = activation threshold for nodes
+    # returns a new Graph that has been trained
+    def train(self, threshold):
+        graph = Graph(self.layers)
+
+        # get index of output layer
+        outputIndex = len(self.layers)-1
+        # get index of last input training data
+        lastInputIndex = self.layers[0]
+
+        # infer input/output based on size of layers[0] and
+        #   layers[len(layers)-1]
+        inputSize = self.layers[0]
+        outputSize = self.layers[outputIndex]
+
+        # loop through iterations
+        for i in range(0, self.maxIterations):
+            # loop through training set
+            for j in range(0, len(self.trainingData)):
+# TODO : replace this section with graph.activat()
+                # set inputs in graph
+                for k in range(0, inputSize):
+                    graph.layers[0][k].output = self.trainingData[j][k]
+                # active each layer forward through the graph
+                for k in range(1, len(graph.layers)):
+                    # sequentially activate each node in layer
+                    for l in range(0, len(graph.layers[k])):
+                        graph.layers[k][l].activate(threshold)
+                # propagate delta error backwards from output to input
+                for k in range(0,outputSize):
+# TODO : should really be using derivative of output func, see book
+                    node = graph.layers[outputIndex][k]
+                    error = self.trainingData[j][lastInputIndex + k] \
+                            - node.output
+                    # update weights based on error
+                    for edge in node.indegrees:
+                        edge.weight += self.learnRate * edge.origin.output \
+                                       * error
+# TODO : should really be using derivative of output func, see book
+                for k in range(outputIndex - 1, 0, -1):
+                    for node in graph.layers[k]:
+                        error = self.trainingData[lastInputIndex + k] \
+                                - node.output
+                        # update weights based on error
+                        for edge in node.indegrees:
+                            edge.weight += self.learnRate * edge.origin.output \
+                                           * error
+
+        return graph
 
     def __repr__(self):
         ret = "layers = %s\n" % str(self.layers).replace(" ","")
