@@ -1,3 +1,5 @@
+import random
+
 from graph import Graph
 
 class Training:
@@ -14,11 +16,15 @@ class Training:
         self.maxIterations = 0
         self.trainingData = []
 
+# TODO : training does not work with logistic activation
     # Based on given training parameters, create and train a graph
     #   threshold = activation threshold for nodes
     # returns a new Graph that has been trained
     def train(self, threshold):
         graph = Graph(self.layers)
+
+        # init error matrix
+        errors = [[0.0] * num for num in self.layers]
 
         # get index of output layer
         outputIndex = len(self.layers)-1
@@ -34,26 +40,32 @@ class Training:
         for i in range(0, self.maxIterations):
             # loop through training set
             for j in range(0, len(self.trainingData)):
+                # activate graph
                 graph.activate(self.trainingData[j][0:inputSize], threshold)
                 # propagate delta error backwards from output to input
                 for k in range(0,outputSize):
-# TODO : should really be using derivative of output func, see book
                     node = graph.layers[outputIndex][k]
-                    error = self.trainingData[j][lastInputIndex + k] \
-                            - node.output
-                    # update weights based on error
-                    for edge in node.indegrees:
-                        edge.weight += self.learnRate * edge.origin.output \
-                                       * error
-# TODO : should really be using derivative of output func, see book
+                    #errors[outputIndex][k] = (node.output * (1 - node.output)) \
+                    errors[outputIndex][k] = 1 \
+                                * (self.trainingData[j][lastInputIndex + k] \
+                                - node.output)
                 for k in range(outputIndex - 1, 0, -1):
-                    for node in graph.layers[k]:
-                        error = self.trainingData[lastInputIndex + k] \
-                                - node.output
-                        # update weights based on error
-                        for edge in node.indegrees:
+                    for j in range(0, len(graph.layers[k])):
+                        node = graph.layers[k][j]
+                        # sum incoming weights and errors
+                        error = 0.0
+                        for l in range(0,len(node.outdegrees)):
+                            error += node.outdegrees[l].weight \
+                                     * errors[k+1][l]
+                        
+                        #errors[k][j] = (node.output * (1 - node.output)) * error
+                        errors[k][j] = 1 * error
+                # update weights based on error
+                for k in range(1, len(graph.layers)):
+                    for j in range(0, len(graph.layers[k])):
+                        for edge in graph.layers[k][j].indegrees:
                             edge.weight += self.learnRate * edge.origin.output \
-                                           * error
+                                           * errors[k][j]
 
         return graph
 

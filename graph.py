@@ -51,21 +51,18 @@ class Graph:
                 #get outputs
                 if i == len(self.layers) - 1:
                     outputs.append(self.layers[i][j].output)
-                    
+
         return outputs
 
     # String rep of Graph
     def __repr__(self):
         ret = "nodes: %i\n" % self.nodeCount
-        ret += "Layer,Node,Input,(Indegree:weight)...\n"
+        ret += "Layer,Node,Input,Output,(Indegree:weight)...\n"
 
         layerNum = 0
         for layer in self.layers:
             for node in layer:
-                ret += "%i,%s,%.4f," % (layerNum, node.id, node.input)
-                for indegree in node.indegrees:
-                    ret += "(%s:%.4f)" % (indegree.origin.id,indegree.weight)
-                ret += "\n"
+                ret += "%i,%s\n" % (layerNum, repr(node))
             layerNum += 1
 
         return ret
