@@ -22,7 +22,7 @@ class Training:
     # returns a new Graph that has been trained
     def train(self, threshold):
         graph = Graph(self.layers)
-
+        
         # init error matrix
         errors = [[0.0] * num for num in self.layers]
 
@@ -80,7 +80,7 @@ class Training:
             ret += "%s\n" % str(data).strip("[]").replace(" ","")
 
         ret = ret.rstrip("\n")
-
+        
         return ret
 
     # Read a file of training data. An example file layout:

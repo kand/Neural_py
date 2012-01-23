@@ -1,3 +1,5 @@
+import random
+
 from node import Node
 
 class Graph:
@@ -22,11 +24,11 @@ class Graph:
                 if i > 0:
                     prevLayer = self.layers[i - 1]
                     for k in range(0, len(prevLayer)):
-                        node.addIndegree(prevLayer[k],0.0)
+                        node.addIndegree(prevLayer[k],random.random())
                     dummy = Node()
                     dummy.id = "d"
                     dummy.output = 1.0
-                    node.addIndegree(dummy,0.0)
+                    node.addIndegree(dummy,random.random())
                 
                 layer.append(node)
                 self.nodeCount += 1

@@ -1,10 +1,10 @@
-layers = [2,1]
+layers = [2,8,1]
 learnRate = 0.1
 momentum = 0.05
 type = EPOCH
 minError = 0.01
-maxIterations = 100
-0,0,1
-0,1,1
-1,0,1
-1,1,0
+maxIterations = 5
+0,0,0
+0,1,0
+1,0,0
+1,1,1
